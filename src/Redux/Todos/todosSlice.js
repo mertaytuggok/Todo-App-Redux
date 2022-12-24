@@ -12,6 +12,11 @@ export const todosSlice = createSlice({
       { id: "2", title: "Redux/Toolkit", completed: false },
     ],
   },
-  reducers: {},
+  reducers: {
+    addNewTodo: (state, action) => {
+      state.items.push(action.payload);
+    },
+  },
 });
+export const { addNewTodo } = todosSlice.actions;
 export default todosSlice.reducer;
