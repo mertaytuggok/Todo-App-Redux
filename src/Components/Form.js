@@ -8,6 +8,7 @@ export const Form = () => {
   const dispatch = useDispatch();
 
   const handleSumbit = (e) => {
+    if (!title) return;
     e.preventDefault();
     dispatch(addNewTodo({ id: nanoid(), title, completed: false }));
 

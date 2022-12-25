@@ -1,13 +1,18 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeActiveFilter, clearCompleted } from "../Redux/Todos/todosSlice";
+import {
+  changeActiveFilter,
+  clearCompleted,
+  selectTodos,
+  selectActiveFilter,
+} from "../Redux/Todos/todosSlice";
 
 export const ContentFooter = () => {
   const dispatch = useDispatch();
-  const items = useSelector((state) => state.todos.items);
+  const items = useSelector(selectTodos);
   const itemsLength = items.filter((item) => !item.completed).length;
 
-  const activeFilter = useSelector((state) => state.todos.activeFilter);
+  const activeFilter = useSelector(selectActiveFilter);
   return (
     <footer className="footer">
       <span className="todo-count">

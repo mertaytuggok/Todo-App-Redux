@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Footer = () => {
+function Footer() {
   return (
     <footer className="info">
       <p>Click to edit a todo</p>
@@ -12,4 +12,6 @@ export const Footer = () => {
       </p>
     </footer>
   );
-};
+}
+
+export default React.memo(Footer);
