@@ -1,21 +1,35 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
+export const getTodosAsync = createAsyncThunk(
+  "todos/getTodosAsync",
+  async () => {
+    const res = await axios("https://jsonplaceholder.typicode.com/todos");
+    return res.data;
+  }
+);
 export const todosSlice = createSlice({
   name: "todos",
   initialState: {
-    items: [
-      {
-        id: "1",
-        title: "Todo App",
-        completed: true,
-      },
-      { id: "2", title: "Redux/Toolkit", completed: false },
-    ],
+    items: [],
+    isLoading: false,
+    error: null,
     activeFilter: "all",
   },
   reducers: {
-    addNewTodo: (state, action) => {
-      state.items.push(action.payload);
+    addNewTodo: {
+      reducer: (state, action) => {
+        state.items.push(action.payload);
+      },
+      prepare: ({ title }) => {
+        return {
+          payload: {
+            id: nanoid(),
+            completed: false,
+            title,
+          },
+        };
+      },
     },
     toggle: (state, action) => {
       const { id } = action.payload;
@@ -33,6 +47,19 @@ export const todosSlice = createSlice({
     clearCompleted: (state) => {
       const filtered = state.items.filter((item) => item.completed === false);
       state.items = filtered;
+    },
+  },
+  extraReducers: {
+    [getTodosAsync.pending]: (state, action) => {
+      state.isLoading = true;
+    },
+    [getTodosAsync.fulfilled]: (state, action) => {
+      state.items = action.payload;
+      state.isLoading = false;
+    },
+    [getTodosAsync.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
     },
   },
 });

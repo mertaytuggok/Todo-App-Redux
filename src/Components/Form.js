@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
 import { addNewTodo } from "../Redux/Todos/todosSlice";
 
 export const Form = () => {
@@ -10,7 +9,7 @@ export const Form = () => {
   const handleSumbit = (e) => {
     if (!title) return;
     e.preventDefault();
-    dispatch(addNewTodo({ id: nanoid(), title, completed: false }));
+    dispatch(addNewTodo({ title }));
 
     setTitle("");
   };
